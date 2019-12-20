@@ -3,6 +3,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Details_Page/Recruit_demo.dart';
 import 'dart:convert';
+import '../Event_bus/Collect_Fresh.dart';
 
 List <Map>list2 = [];
 const String url =
@@ -15,15 +16,19 @@ class Collection_Page extends StatefulWidget {
 }
 
 class _Collection_PageState extends State<Collection_Page> {
+ var eventFlesh;
 String cartString="[]" ;
  List <Map>Collection_List3=[ ];
- List <Map>Collection_List2=[ ];
+
  String fun;
 //获得数据
 Future<String> getdateInfo()async{
 SharedPreferences prefs = await SharedPreferences.getInstance();
  cartString=prefs.getString('cartInfo'); 
-Collection_List2= (json.decode(cartString.toString()) as List).cast();  
+setState(() {
+  Collection_List3= (json.decode(cartString.toString()) as List).cast();
+});
+
 }
  remove() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,21 +42,33 @@ Collection_List2= (json.decode(cartString.toString()) as List).cast();
   void initState() {
     // TODO: implement initState
   
-     getdateInfo().then((data) {
-      //  print("数据1为${Collection_List2.toString()}");
-     setState(() {
-      Collection_List3=Collection_List2;
-     });
-      });
+     getdateInfo();
+    //  .then((data) {
+    //   //  print("数据1为${Collection_List2.toString()}");
+    //  setState(() {
+    //   Collection_List3=Collection_List2;
+    //  });
+    //   });
+    eventFlesh= eventBus.on<ProductContentEvent>().listen((event){
 
+getdateInfo();
+     });
+     
     super.initState();
   }
-
+@override
+  void dispose() {
+    
+    // TODO: implement dispose
+    super.dispose();
+   this. eventFlesh.cancel();
+   this.eventFlesh=Null;
+  }
 
   @override
   Widget build(BuildContext context) {
    
-    if (Collection_List2!=null) {
+    if (Collection_List3!=null) {
         return Scaffold(
         
         body:EasyRefresh(
