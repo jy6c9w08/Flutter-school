@@ -1,3 +1,4 @@
+import '../Event_bus/Collect_Fresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -187,7 +188,7 @@ class _Recruit_PageState extends State<Recruit_Page> {
                                     fontSize: 14);
                                 }
 
-                                
+                                 eventBus.fire(ProductContentEvent());
                                 print("点击收藏");
                               },
                               color: Colors.blueAccent,
