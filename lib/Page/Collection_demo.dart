@@ -43,12 +43,7 @@ setState(() {
     // TODO: implement initState
   
      getdateInfo();
-    //  .then((data) {
-    //   //  print("数据1为${Collection_List2.toString()}");
-    //  setState(() {
-    //   Collection_List3=Collection_List2;
-    //  });
-    //   });
+
     eventFlesh= eventBus.on<ProductContentEvent>().listen((event){
 
 getdateInfo();
