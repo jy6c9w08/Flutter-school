@@ -26,7 +26,7 @@ class _Recruit_PageState extends State<Recruit_Page> {
   var mlist;
   int isCollect = -1;
   String cartString = "";
-  List title;
+  // List title;
   List<Widget> list = List();
   _launchURL() async {
     const url = 'https://www.baidu.com/';
@@ -154,41 +154,40 @@ class _Recruit_PageState extends State<Recruit_Page> {
                                     mlist['pushurl'],
                                     mlist['comment'],
                                   );
-                                     Fluttertoast.showToast(
-                                    msg: "收藏成功",
-                                    gravity: ToastGravity.BOTTOM,
-                                    fontSize: 14);
+                                  Fluttertoast.showToast(
+                                      msg: "收藏成功",
+                                      gravity: ToastGravity.BOTTOM,
+                                      fontSize: 14);
                                 } else {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
                                   cartString = prefs.getString('cartInfo');
-                                  List<Map> tempList =
-                                      (json.decode(cartString.toString())
-                                              as List)
-                                          .cast();
+                                  List tempList = (json
+                                      .decode(cartString.toString()) as List);
 
-                                  int tempIndex = 0;
                                   int delIndex = 0;
-                                  tempList.forEach((item) {
-                                    if (item['title'] == title) {
-                                      delIndex = tempIndex;
+                                  for (int i = 0;; i++) {
+                                    if (tempList[i]['title'].toString() ==
+                                        mlist['title'].toString()) {
+                                      delIndex = i;
+                                      break;
                                     }
-                                    tempIndex++;
-                                  });
+                                  }
+
                                   tempList.removeAt(delIndex);
                                   cartString = json.encode(tempList).toString();
-                                  prefs.setString('cartInfo', cartString); 
+                                  prefs.setString('cartInfo', cartString);
 
                                   setState(() {
                                     isCollect = isCollect * -1;
                                   });
                                   Fluttertoast.showToast(
-                                    msg: "取消收藏",
-                                    gravity: ToastGravity.BOTTOM,
-                                    fontSize: 14);
+                                      msg: "取消收藏",
+                                      gravity: ToastGravity.BOTTOM,
+                                      fontSize: 14);
                                 }
 
-                                 eventBus.fire(ProductContentEvent());
+                                eventBus.fire(ProductContentEvent());
                                 print("点击收藏");
                               },
                               color: Colors.blueAccent,
