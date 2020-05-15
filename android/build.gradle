@@ -1,7 +1,11 @@
 buildscript {
     repositories {
-        google()
-        jcenter()
+//        google()
+//        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+
     }
 
     dependencies {
@@ -11,8 +15,12 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
+//        google()
+//        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+
     }
 }
 
@@ -23,7 +31,17 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(':app')
 }
-
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'androidx.core' &&
+                    !details.requested.name.contains('androidx')) {
+                details.useVersion "1.0.1"
+            }
+        }
+    }
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+

@@ -145,9 +145,10 @@ class _Home_PageState extends State<Home_Page> {
                             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                             alignment: Alignment.center,
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 Container(
-                                  height: 70.0,
+                                  height: 60.0,
                                   // width: width,
                                   // color: Colors.grey[200],
                                   child: AspectRatio(
@@ -199,7 +200,8 @@ class _Home_PageState extends State<Home_Page> {
                   child:NoMore() ,
                 ),
                 // _gridCount==mlist.length?Text("我是有底线的"):Text(""),
-                footer,
+footer
+
               ],
             );
           },

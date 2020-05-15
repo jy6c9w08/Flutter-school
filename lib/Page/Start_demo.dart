@@ -22,7 +22,6 @@ class _StartAppState extends State<StartApp>{
     
     @override
     Widget build(BuildContext context){
-        ScreenUtil.instance = ScreenUtil(width: 750,height: 1334)..init(context);
 
         // final router = Router();
         // Routes.configureRoutes(router);
