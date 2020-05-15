@@ -1,14 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:apifm/apifm.dart' as Apifm;
 import 'package:flutter/services.dart';
+import 'package:flutter_tujin/Buttom/Bottom_demo.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'Resgister_demo.dart';
-import 'dart:io';
-import 'package:device_info/device_info.dart';
-
-import '../Buttom/Bottom_demo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+String loginUrl="http://121.41.123.231:5000/user/login";
 class LoginPageWidget extends StatefulWidget {
   @override
   LoginPageWidgetState createState() => LoginPageWidgetState();
@@ -16,111 +14,52 @@ class LoginPageWidget extends StatefulWidget {
 
 class LoginPageWidgetState extends State<LoginPageWidget> {
   //全局 Key 用来获取 Form 表单组件
-
-  GlobalKey<FormState> loginKey = GlobalKey<FormState>();
-  static String _username = ""; //用户名
-  static String _password = "";
+final loginFormKey=GlobalKey<FormState>();
+  static int _username; //用户名
+  static String _password;
   DateTime _lastPressedAt;
-  // var graphValidateCodeMap;
-  void regist() async {
-    var loginForm = loginKey.currentState;
-    //验证 Form表单
-    if (!loginForm.validate()) {
-      Fluttertoast.showToast(
-          msg: "请认真填写表单", gravity: ToastGravity.CENTER, fontSize: 14);
-      return;
-    }
-    loginForm.save();
-    if (_username == null || _username.trim().length < 11) {
-      Fluttertoast.showToast(
-          msg: "请输入手机号码", gravity: ToastGravity.CENTER, fontSize: 14);
-      return;
-    }
-    if (_password == null || _password.trim().length < 4) {
-      Fluttertoast.showToast(
-          msg: "请输入登录密码", gravity: ToastGravity.CENTER, fontSize: 14);
-      return;
-    }
-    // 读取手机信息
-    String deviceId, deviceName;
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      deviceId = iosInfo.identifierForVendor;
-      deviceName = iosInfo.name;
-    } else if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      deviceId = androidInfo.id;
-      deviceName = androidInfo.display;
-    }
-    print('deviceId: $deviceId, deviceName: $deviceName');
-    var res =
-        await Apifm.login_mobile(_username, _password, deviceId, deviceName);
 
-    if (res['code'] == 0) {
-      // print("打印密码$_username");
-      _onClick(Textusername);
-      _onClick(Textpassword);
-      Fluttertoast.showToast(
-          msg: "登录成功!", gravity: ToastGravity.CENTER, fontSize: 14);
+void login()  async {
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BottomNavigationBarDemo()),
-      );
-    } else {
-      Fluttertoast.showToast(
-          msg: res['msg'], gravity: ToastGravity.CENTER, fontSize: 14);
-    }
+    Dio dio=Dio();
+  var result=await dio.post(loginUrl,data:{
+    "user_id":_username,
+    "password":_password,
+  });
+  print(result);
+  print(result.statusCode);
+  if(result.statusCode==200){
+    _onClick(result);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => BottomNavigationBarDemo()),
+    );
+  }
   }
 
   @override
   void initState() {
-    Apifm.init('gooking');
-    fun();
-
     super.initState();
   }
 
-  Future _onClick(var Text) async {
+  Future _onClick(var result) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String account = Text.text;
-    preferences.setString('account', account);
-    print('存储account为:$account');
+    preferences.setString('account', result.toString());
+    print('存储account为:$result');
   }
 
-  Future _readShared(var Text) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String account = preferences.get('account');
-    print('读取到acount为:$account');
-    Text.text = account;
-  }
 
-  fun() {
-    if ('account'.isNotEmpty) {
-      _readShared(Textusername);
-      _readShared(Textpassword);
-    } else {
-      return null;
-    }
-  }
 
-  TextEditingController Textusername = TextEditingController();
-  TextEditingController Textpassword = TextEditingController();
-  // if (Textusername!=null&&Textpassword!=null) {
-  //       Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => BottomNavigationBarDemo()),
-  //     );
-  //   } else {}
 
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
           backgroundColor: Colors.white,
           body: Form(
-              key: loginKey,
+            key: loginFormKey,
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 22.0),
                 children: <Widget>[
@@ -132,19 +71,18 @@ class LoginPageWidgetState extends State<LoginPageWidget> {
                   SizedBox(height: 70.0),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: '输入手机号',
-                      hintText: "用于接收短信验证码",
+                      labelText: '账号',
+                      hintText: "123",
                       hintStyle: TextStyle(
                         color: Colors.grey,
                         fontSize: 13,
                       ),
                       prefixIcon: Icon(Icons.person),
                     ),
-                    // controller: Textmbiolcontroller,
-                    controller: Textusername,
+                    controller: usernameController,
 //当 Form 表单调用保存方法 Save时回调的函数。
                     onSaved: (value) {
-                      _username = value;
+                      _username = int.parse(value);
                     },
 // 当用户确定已经完成编辑时触发
                     // onFieldSubmitted: (value) {},
@@ -161,9 +99,8 @@ class LoginPageWidgetState extends State<LoginPageWidget> {
                       prefixIcon: Icon(Icons.lock),
                     ),
 //是否是密码
-                    obscureText: true,
-                    // controller: TextpasswordController,
-                    controller: Textpassword,
+//                    obscureText: true,
+                    controller: passwordController,
                     onSaved: (value) {
                       _password = value;
                     },
@@ -180,10 +117,11 @@ class LoginPageWidgetState extends State<LoginPageWidget> {
                       ),
                       color: Colors.black,
                       onPressed: () {
-                        regist();
+                        loginFormKey.currentState.save();
+                        login();
                         Fluttertoast.showToast(
                           toastLength:Toast.LENGTH_LONG ,
-                          timeInSecForIos: 2,
+                          timeInSecForIosWeb: 2,
                             msg: "登录中......",
                             gravity: ToastGravity.BOTTOM,
                             fontSize: 14);
@@ -216,6 +154,7 @@ class LoginPageWidgetState extends State<LoginPageWidget> {
                 ],
               )),
         ),
+        // ignore: missing_return
         onWillPop: () async {
           if (_lastPressedAt == null ||
               (DateTime.now().difference(_lastPressedAt) >

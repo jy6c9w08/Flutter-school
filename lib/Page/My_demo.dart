@@ -1,11 +1,39 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Account_number/Login_demo.dart';
 import '../Page/Collection_demo.dart';
-class My_Page extends StatelessWidget {
-  const My_Page({Key key}) : super(key: key);
+//class My_Page extends StatelessWidget {
+// My_Page({Key key}) : super(key: key);
 
+
+//}
+class My_Page extends StatefulWidget {
+  @override
+  _My_PageState createState() => _My_PageState();
+}
+
+class _My_PageState extends State<My_Page> {
+  var msg;
+  Future getAccount ()async{
+    SharedPreferences prefs =await SharedPreferences.getInstance();
+    msg= prefs.getString("account");
+
+   setState(() {
+     msg=jsonDecode(msg);
+   });
+
+
+  }
+  @override
+  void initState() {
+    getAccount();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white24,
@@ -21,24 +49,35 @@ class My_Page extends StatelessWidget {
             color: Colors.white,
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text("用户名"),
-            trailing: Text("jy6c")
+              leading: Icon(Icons.person),
+              title: Text("用户名"),
+              trailing: msg==null?Text("default"):Text(msg["username"])
           ),
           ListTile(
-            leading: Icon(Icons.mode_edit),
-            title: Text("账号"),
-            trailing: Text("jy6c9w08")
+              leading: Icon(Icons.mode_edit),
+              title: Text("账号"),
+              trailing: msg==null?Text("default"):Text(msg["user_id"].toString())
           ),
           ListTile(
             leading: Icon(Icons.favorite),
             title: Text("收藏"),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
-               Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return Collection_Page();
-                    }));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return Collection_Page();
+                  }));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text("修改"),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: (){
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return Collection_Page();
+                  }));
             },
           ),
           ListTile(
@@ -74,25 +113,25 @@ class My_Page extends StatelessWidget {
           Container(
             height: 80.0,
           ),
-         SizedBox(
-        height: 45.0,
-        width: 150.0,
-        child: RaisedButton(
-          child: Text(
-            '注销',
-            style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)
-            
+          SizedBox(
+            height: 45.0,
+            width: 150.0,
+            child: RaisedButton(
+              child: Text(
+                  '注销',
+                  style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)
+
+              ),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPageWidget()),
+                );
+              },
+              shape: StadiumBorder(side: BorderSide()),
+            ),
           ),
-          color: Colors.white,
-          onPressed: () {
-            Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPageWidget()),
-      );
-          },
-          shape: StadiumBorder(side: BorderSide()),
-        ),
-      ),
         ],
       ),
     );

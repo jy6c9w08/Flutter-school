@@ -30,16 +30,15 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blue,
       ),
       title: "校园云邦",
-      initialRoute:  'start',
+      initialRoute:  '/start',
       routes: {
-        'start':(context)=>StartApp(),
+        '/start':(context)=>StartApp(),
         '/buttomnavitor': (context) => BottomNavigationBarDemo(),
         '/': (context) => Home_Page(),
         '/graduation': (context) => Graduation_Page(),
         '/my': (context) => My_Page(),
         '/school_enrollment': (context) => School_enrollment_Page(),
         '/person': (context) => Person_Page(),
-        // '/recruit':(context)=> Recruit_Page(),
         '/loginPageWidget': (context) => LoginPageWidget(),
       },
     );
