@@ -6,7 +6,7 @@ import '../Page/Collection_demo.dart';
 //class My_Page extends StatelessWidget {
 // My_Page({Key key}) : super(key: key);
 
-
+var msg;
 //}
 class My_Page extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class My_Page extends StatefulWidget {
 }
 
 class _My_PageState extends State<My_Page> {
-  var msg;
+
   Future getAccount ()async{
     SharedPreferences prefs =await SharedPreferences.getInstance();
     msg= prefs.getString("account");
@@ -69,17 +69,18 @@ class _My_PageState extends State<My_Page> {
                   }));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text("修改"),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: (){
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) {
-                    return Collection_Page();
-                  }));
-            },
-          ),
+
+//          ListTile(
+//            leading: Icon(Icons.favorite),
+//            title: Text("修改"),
+//            trailing: Icon(Icons.keyboard_arrow_right),
+//            onTap: (){
+//              Navigator.of(context).push(
+//                  MaterialPageRoute(builder: (BuildContext context) {
+//                    return Collection_Page();
+//                  }));
+//            },
+//          ),
           ListTile(
             onTap: () {
               showDialog(
@@ -192,11 +193,11 @@ class TopView extends StatelessWidget {
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      new Text("用户名",
+                      new Text(msg==null?"":msg["username"],
                           style: TextStyle(
                               color: Color(0xFF777777), fontSize: 18.0),
                           textAlign: TextAlign.left),
-                      new Text("账号",
+                      new Text(msg==null?"":msg["user_id"].toString(),
                           style: TextStyle(
                               color: Color(0xFF555555), fontSize: 12.0),
                           textAlign: TextAlign.left)

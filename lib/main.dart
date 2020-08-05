@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tujin/Page/My_demo.dart';
+import 'package:flutter_tujin/Page/postPage.dart';
 import 'Page/Home_demo.dart';
 import './Page/Graduation_demo.dart';
 import './Buttom/Bottom_demo.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blue,
       ),
       title: "校园云邦",
-      initialRoute:  '/start',
+      initialRoute:  '/postPage',
       routes: {
         '/start':(context)=>StartApp(),
         '/buttomnavitor': (context) => BottomNavigationBarDemo(),
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/school_enrollment': (context) => School_enrollment_Page(),
         '/person': (context) => Person_Page(),
         '/loginPageWidget': (context) => LoginPageWidget(),
+        '/postPage':(context)=>postPage()
       },
     );
   }
