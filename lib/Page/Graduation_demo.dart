@@ -192,7 +192,7 @@ class ExpansionTile_demo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < date['people'].length; i++) {
       titlelist.add(
         ListTile(
           onTap: () {

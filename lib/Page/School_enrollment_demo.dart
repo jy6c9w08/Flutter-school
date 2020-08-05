@@ -188,46 +188,43 @@ class List_demoState extends State<List_demo>
           )
         : Text("");
   }
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenSave.init(context);
-    if (mlist != null) {
-      return Container(
-        height: double.infinity,
-        color: Colors.grey[100],
-        child: EasyRefresh(
-          header: MaterialHeader(),
-          footer: MaterialFooter(),
-          onRefresh: null,
-          onLoad: _listCount >= mlist.length
-              ? null
-              : () async {
-                  await Future.delayed(Duration(seconds: 2), () {
-                    if (_listCount < mlist.length) {
-                      setState(() {
-                        _listCount += 10;
-                      });
-                    } else {
-                      setState(() {
-                        _listCount = mlist.length;
-                        Fluttertoast.showToast(msg: "到底了", fontSize: 14);
-                      });
-                    }
-                  });
-                },
-          child: ListView.builder(
-            // padding: EdgeInsets.all(0.0),
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return Recruit_Page(mlist[index]);
-                  }));
-                },
-                child: Card(
-                    child: Column(
+Widget chooseWidget(){
+  if (mlist != null) {
+ return  Container(
+    height: double.infinity,
+    color: Colors.grey[100],
+    child: EasyRefresh(
+      header: MaterialHeader(),
+      footer: MaterialFooter(),
+      onRefresh: null,
+      onLoad: _listCount >= mlist.length
+          ? null
+          : () async {
+        await Future.delayed(Duration(seconds: 2), () {
+          if (_listCount < mlist.length) {
+            setState(() {
+              _listCount += 10;
+            });
+          } else {
+            setState(() {
+              _listCount = mlist.length;
+              Fluttertoast.showToast(msg: "到底了", fontSize: 14);
+            });
+          }
+        });
+      },
+      child: ListView.builder(
+        // padding: EdgeInsets.all(0.0),
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return Recruit_Page(mlist[index]);
+              }));
+            },
+            child: Card(
+                child: Column(
                   children: <Widget>[
                     Container(
                       height: 100.0,
@@ -238,7 +235,7 @@ class List_demoState extends State<List_demo>
                             child: AspectRatio(
                                 aspectRatio: 1 / 1,
                                 child: Container(
-                                    // color: Colors.grey[200],
+                                  // color: Colors.grey[200],
                                     child: Image.network(
                                         mlist[index]['logourl']))),
                           ),
@@ -249,7 +246,7 @@ class List_demoState extends State<List_demo>
                               color: Colors.white,
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
@@ -280,14 +277,36 @@ class List_demoState extends State<List_demo>
                     NoMore(index + 1)
                   ],
                 )),
-              );
-            },
-            itemCount: _listCount,
-          ),
-        ),
-      );
-    } else {
-      return LoadingWidget();
-    }
+          );
+        },
+        itemCount: _listCount,
+      ),
+    ),
+  );
+} else {
+  return LoadingWidget();
   }
+
+}
+  @override
+  Widget build(BuildContext context) {
+    ScreenSave.init(context);
+   return  Stack(
+      children: <Widget>[
+        chooseWidget(),
+
+        Positioned(
+          bottom: 0,
+            right: 0,
+            child: FloatingActionButton(onPressed: (){
+              print("object");
+            },
+              child: Icon(Icons.add),
+            )),
+
+      ],
+
+    );
+  }
+
 }
