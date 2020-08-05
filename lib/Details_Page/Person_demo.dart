@@ -61,7 +61,7 @@ class Person_Page extends StatelessWidget{
                             ListTile(
                              
                               leading: Icon(Icons.school),
-                              title: Text("XX级优秀毕业生"),
+                              title: Text(date['class']==null?"xx级毕业生":date['class']),
                               
                             ),
                             Container(
@@ -71,7 +71,7 @@ class Person_Page extends StatelessWidget{
                             ),
                             ListTile(
                               
-                              title: Text("qq${date['qq']}"),
+                              title: Text("qq ${date['qq']}"),
                               leading: Icon(Icons.contact_phone),
                              
                             ),
