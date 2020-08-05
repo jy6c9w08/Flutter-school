@@ -29,7 +29,7 @@ class _Recruit_PageState extends State<Recruit_Page> {
   // List title;
   List<Widget> list = List();
   _launchURL() async {
-    const url = 'https://www.baidu.com/';
+    var url = '${mlist['pushurl']}';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -60,22 +60,35 @@ class _Recruit_PageState extends State<Recruit_Page> {
     cartString = json.encode(tempList).toString();
     prefs.setString('cartInfo', cartString); //进行持久化
   }
-
+  Future<String> loadData() async {
+     String ishave="";
+     ishave = await Storage.getString('cartInfo');
+     return ishave;
+   }
 //判断数据存在
   isdate() async {
-    String date = json.encode(mlist);
-    String ishave = await Storage.getString('cartInfo');
-    if (ishave.contains(mlist['title'])) {
+//    String date = json.encode(mlist);
+    loadData().then((value){
+//      print("this is$value");
+    if (value==[]) {
+        setState(() {
+          isCollect = -1;
+        });
+        print("false");
+      }else if (value.contains(mlist['title'])) {
       setState(() {
         isCollect = 1;
       });
       print("ture");
-    } else {
+    }
+    else {
       setState(() {
         isCollect = -1;
       });
-      print("false");
     }
+    });
+//     print(ishave);
+
     // print('123$ishave');
   }
 
@@ -83,7 +96,7 @@ class _Recruit_PageState extends State<Recruit_Page> {
   void initState() {
     // TODO: implement initState
     isdate();
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < mlist['comment'].length; i++) {
       list.add(
         ListTile(
           title: Text(
@@ -229,7 +242,7 @@ class _Recruit_PageState extends State<Recruit_Page> {
                               children: <Widget>[
                                 ListTile(
                                   onTap: _launchURL,
-                                  title: Text("微信推荐"),
+                                  title: Text("官网推送"),
                                 ),
                               ]),
                         ],
