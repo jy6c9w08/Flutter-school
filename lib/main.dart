@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blue,
       ),
       title: "校园云邦",
-      initialRoute:  '/postPage',
+      initialRoute:  '/start',
       routes: {
         '/start':(context)=>StartApp(),
         '/buttomnavitor': (context) => BottomNavigationBarDemo(),

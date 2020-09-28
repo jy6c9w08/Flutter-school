@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
 class postPage extends StatefulWidget {
   @override
   _postPageState createState() => _postPageState();
@@ -10,13 +12,17 @@ class _postPageState extends State<postPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("发布评价",style: TextStyle(
-          color: Colors.black
-        ),),
+        title: Text(
+          "发布信息",
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: IconButton(icon:Icon(Icons.arrow_back_ios,color: Colors.black,), onPressed: (){
+          Navigator.pop(context);
+        }),
         actions: <Widget>[
-          FlatButton(onPressed: (){}, child: Text(
-            "发布"
-          ),
+          FlatButton(
+            onPressed: () {},
+            child: Text("发布"),
           )
         ],
       ),
@@ -32,6 +38,7 @@ class bodyPage extends StatefulWidget {
 
 class _bodyPageState extends State<bodyPage> {
   TextEditingController _textEditingController;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -41,23 +48,65 @@ class _bodyPageState extends State<bodyPage> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      child:TextField(
-        keyboardType: TextInputType.multiline,
-        maxLines: 5,
-        minLines: 1,
-        controller: _textEditingController,
-        decoration: null,
-            onSubmitted: (value) {
-              if (_textEditingController.text.isNotEmpty) {
+        padding: EdgeInsets.all(20),
+        height: double.infinity,
+        child: SingleChildScrollView(
+    child: Column(
+      children: <Widget>[
+        Center(
+          child: Container(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              children: <Widget>[Icon(Icons.add), Text("添加图片")],
+            ),
+          )
+        ),
+        TextField(
+          decoration: InputDecoration(
+              fillColor: Colors.blue.shade100,
+              filled: true,
+              labelText: '姓名'),
+        ),
+        TextField(
+          decoration: InputDecoration(
+              fillColor: Colors.blue.shade100,
+              filled: true,
+              labelText: '毕业时间'),
+        ),
+        TextField(
+          decoration: InputDecoration(
+              fillColor: Colors.blue.shade100,
+              filled: true,
+              labelText: '联系方式'),
+        ),
+        TextField(
+          decoration: InputDecoration(
+              fillColor: Colors.blue.shade100,
+              filled: true,
+              labelText: '座右铭'),
+        ),
+        TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: 5,
+          minLines: 1,
+          controller: _textEditingController,
+          decoration: InputDecoration(
+              fillColor: Colors.blue.shade100,
+              filled: true,
+              labelText: '履历'),
+          onSubmitted: (value) {
+            if (_textEditingController.text.isNotEmpty) {
 //                _sendMsg(_textEditingController.text);
-                _textEditingController.text = '';
-              }
-            },
-      ),
+              _textEditingController.text = '';
+            }
+          },
+        ),
+      ],
+    )),
     );
   }
 }
