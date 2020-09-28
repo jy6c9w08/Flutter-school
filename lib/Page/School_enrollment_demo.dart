@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_tujin/Page/postPage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../Details_Page/Recruit_demo.dart';
 import 'package:dio/dio.dart';
@@ -295,14 +296,15 @@ Widget chooseWidget(){
       children: <Widget>[
         chooseWidget(),
 
-        Positioned(
-          bottom: 0,
-            right: 0,
-            child: FloatingActionButton(onPressed: (){
-              print("object");
-            },
-              child: Icon(Icons.add),
-            )),
+//        Positioned(
+//          bottom: 0,
+//            right: 0,
+//            child: FloatingActionButton(onPressed: (){
+////              print("object");
+
+//            },
+//              child: Icon(Icons.add),
+//            )),
 
       ],
 

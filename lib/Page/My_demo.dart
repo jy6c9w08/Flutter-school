@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_tujin/Page/postPage.dart';
+import 'package:flutter_tujin/Page/post_company_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Account_number/Login_demo.dart';
 import '../Page/Collection_demo.dart';
@@ -35,106 +37,136 @@ class _My_PageState extends State<My_Page> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      
       appBar: AppBar(
         backgroundColor: Colors.white24,
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: Text("我的信息"),
       ),
-      body: Column(
-        children: <Widget>[
-          TopView(),
-          Container(
-            height: 10,
-            color: Colors.white,
-          ),
+      body: SingleChildScrollView(
+       child:
+          Column(
+            children: <Widget>[
+              TopView(),
+              Container(
+                height: 10,
+                color: Colors.white,
+              ),
+              ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text("用户名"),
+                  trailing: msg==null?Text("default"):Text(msg["username"])
+              ),
+              ListTile(
+                  leading: Icon(Icons.mode_edit),
+                  title: Text("账号"),
+                  trailing: msg==null?Text("default"):Text(msg["user_id"].toString())
+              ),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text("收藏"),
+                trailing: Icon(Icons.keyboard_arrow_right),
+                onTap: (){
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        return Collection_Page();
+                      }));
+                },
+              ),
+
           ListTile(
-              leading: Icon(Icons.person),
-              title: Text("用户名"),
-              trailing: msg==null?Text("default"):Text(msg["username"])
-          ),
-          ListTile(
-              leading: Icon(Icons.mode_edit),
-              title: Text("账号"),
-              trailing: msg==null?Text("default"):Text(msg["user_id"].toString())
-          ),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text("收藏"),
+            leading: Icon(Icons.contact_mail),
+            title: Text("发布校友信息"),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: (){
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (BuildContext context) {
-                    return Collection_Page();
+                    return postPage();
                   }));
             },
           ),
-
-//          ListTile(
-//            leading: Icon(Icons.favorite),
-//            title: Text("修改"),
-//            trailing: Icon(Icons.keyboard_arrow_right),
-//            onTap: (){
-//              Navigator.of(context).push(
-//                  MaterialPageRoute(builder: (BuildContext context) {
-//                    return Collection_Page();
-//                  }));
-//            },
-//          ),
-          ListTile(
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AboutDialog(
-                      applicationName: "校园云邦",
-                      applicationIcon: Image.asset(
-                        "Images/ic_launcher.png",
-                        fit: BoxFit.cover,
-                      ),
-                      applicationVersion: "版本：1.0.0",
-                      applicationLegalese: '版本所有：进修的小team',
-                      children: <Widget>[
-                        Text("邮箱：727824984@qq.com"),
-                        Text("制作：进修的小team"),
-                      ],
-                    );
-                  });
-            },
-            leading: Icon(
-              Icons.report,
-              color: Colors.black12,
-            ),
-            title: Text("关于",textAlign: TextAlign.left,),
-            trailing: Icon(
-              Icons.keyboard_arrow_right,
-              // size: 17.0,
-            ),
-          ),
-          Container(
-            height: 80.0,
-          ),
-          SizedBox(
-            height: 45.0,
-            width: 150.0,
-            child: RaisedButton(
-              child: Text(
-                  '注销',
-                  style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)
-
+              ListTile(
+                leading: Icon(Icons.location_city),
+                title: Text("发公司信息"),
+                trailing: Icon(Icons.keyboard_arrow_right),
+                onTap: (){
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        return PostCompanyPage();
+                      }));
+                },
               ),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPageWidget()),
-                );
-              },
-              shape: StadiumBorder(side: BorderSide()),
-            ),
+              ListTile(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AboutDialog(
+                          applicationName: "校园云邦",
+                          applicationIcon: Image.asset(
+                            "Images/ic_launcher.png",
+                            fit: BoxFit.cover,
+                          ),
+                          applicationVersion: "版本：1.0.0",
+                          applicationLegalese: '版本所有：进修的小team',
+                          children: <Widget>[
+                            Text("邮箱：727824984@qq.com"),
+                            Text("制作：进修的小team"),
+                          ],
+                        );
+                      });
+                },
+                leading: Icon(
+                  Icons.report,
+                  color: Colors.black12,
+                ),
+                title: Text("关于",textAlign: TextAlign.left,),
+                trailing: Icon(
+                  Icons.keyboard_arrow_right,
+                  // size: 17.0,
+                ),
+              ),
+              Container(
+                height: 60.0,
+              ),
+              SizedBox(
+                height: 45.0,
+                width: 150.0,
+                child: RaisedButton(
+                  child: Text(
+                      '注销',
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)
+
+                  ),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPageWidget()),
+                    );
+                  },
+                  shape: StadiumBorder(side: BorderSide()),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+//          Positioned(
+//            right: 0,
+//            bottom: 0,
+//            child:
+//            FloatingActionButton(
+//                onPressed: () {
+//                  Navigator.of(context).push(
+//                      MaterialPageRoute(builder: (BuildContext context) {
+//                        return postPage();
+//                      }));
+//                },
+//                child: Icon(Icons.add)
+//            )
+//          )
+
+      )
     );
   }
 }
